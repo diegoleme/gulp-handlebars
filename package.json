@@ -4,9 +4,9 @@
   "description": "Handlebars plugin for gulp",
   "main": "index.js",
   "dependencies": {
-    "through2": "^0.6.3",
+    "gulp-util": "^3.0.4",
     "handlebars": "^3.0.0",
-    "gulp-util": "^3.0.4"
+    "through2": "^0.6.3"
   },
   "devDependencies": {
     "ember-handlebars": "^1.2.0",
@@ -17,7 +17,8 @@
     "gulp-wrap": "^0.11.0",
     "mocha": "^2.1.0",
     "nsdeclare": "^0.1.0",
-    "should": "^5.0.1"
+    "should": "^5.0.1",
+    "stream-assert": "^2.0.2"
   },
   "scripts": {
     "test": "./node_modules/.bin/mocha"

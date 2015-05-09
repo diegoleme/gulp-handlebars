@@ -1,10 +1,18 @@
 var handlebarsPlugin = require('../');
 var defineModule = require('gulp-define-module');
 var should = require('should');
+var gulp = require('gulp');
 var gutil = require('gulp-util');
+var concat = require('gulp-concat');
+var wrap = require('gulp-wrap')
+var declare = require('gulp-declare')
 var fs = require('fs');
 var path = require('path');
+var assert = require('stream-assert');
+var vm = require('vm')
 require('mocha');
+
+var fixtures = function (glob) { return path.join(__dirname, 'fixtures', glob); }
 
 var getFixture = function(filePath) {
   filePath = path.join('test', 'fixtures', filePath);
@@ -157,5 +165,20 @@ describe('gulp-handlebars', function() {
       stream.end();
     });
 
+    it('should compile multiple templates without override', function(done) {
+      gulp.src(fixtures('Basic*'))
+        .pipe(handlebarsPlugin())
+        .pipe(declare({namespace: 'Templates'}))
+        .pipe(assert.length(3))
+        .pipe(concat('templates.js'))
+        .pipe(assert.length(1))
+        .pipe(assert.first(function(data) {
+          vm.runInThisContext(String(data.contents))
+          Templates.should.have.property('Basic')
+          Templates.Basic.should.have.property('a')
+          Templates.Basic.should.have.property('z')
+        }))
+        .pipe(assert.end(done));
+    });
   });
 });
